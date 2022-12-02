@@ -132,17 +132,25 @@
       }
     },
     "nur": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
       "locked": {
-        "lastModified": 1669805596,
-        "narHash": "sha256-g1CPQZ+1jGhY4bsjppk+gH5jfzzqmPlqGHg0zSYS3Hw=",
-        "owner": "nix-community",
-        "repo": "NUR",
-        "rev": "c81b1e527f3a220abfa9bf8096153d52784c5007",
+        "lastModified": 1669931919,
+        "narHash": "sha256-xqEqDqJW0SsjvBNFNif52mV+W0QX1WXdWmTI32hl6fE=",
+        "owner": "nrabulinski",
+        "repo": "nur-packages",
+        "rev": "aabf48346f9e0d370b0054971dfd3a7c4c3cd2b1",
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
-        "repo": "NUR",
+        "owner": "nrabulinski",
+        "repo": "nur-packages",
         "type": "github"
       }
     },
