@@ -40,15 +40,9 @@ dup size 1 - remove ; Remove last element of the array (empty string)
 ; -- PART 1
 dup (
 	; Splitting the string into two halves
-	dup
-	length 2 div ; Get half of the length of the string
-	over over ; Duplicate the string and half of the length
-	dup ; Duplicate half of the lenght again
-	substr ; Get substring from half of the length to the end
-	rollup ; Get the full string
-	swap
-	0 swap ; Preparing arguments for second substr call
-	substr
+	dup length 2 div :hlen ; Get half of the length of the string
+	dup 0 hlen substr ; Get first half of the string
+	swap hlen hlen substr ; Get second half of the string
 	; ---
 	str-common first ; Get the common character
 	get-priority
