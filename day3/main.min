@@ -1,0 +1,72 @@
+(
+	symbol str-common
+	(str :a str :b ==> quot :res)
+	(
+		a "" split
+		b "" split
+		intersection @res
+	)
+) ::
+
+(
+	symbol chunks
+	(quot :arr int :n ==> quot :res)
+	(
+		() @res
+		(arr size n >=)
+		(
+			arr n take ; Take first n elements
+			res append @res ; Push that array to result
+			arr n drop @arr ; Drop first n elements from arr
+		) while
+	)
+) ::
+
+(
+	symbol get-priority
+	(str :c ==> int :res)
+	(
+		c ord
+		(97 >=)
+			(96 -)
+			(64 - 26 +) if @res
+	)
+) ::
+
+"assets/day3" fread
+"\n" split
+dup size 1 - remove ; Remove last element of the array (empty string)
+
+; -- PART 1
+dup (
+	; Splitting the string into two halves
+	dup
+	length 2 div ; Get half of the length of the string
+	over over ; Duplicate the string and half of the length
+	dup ; Duplicate half of the lenght again
+	substr ; Get substring from half of the length to the end
+	rollup ; Get the full string
+	swap
+	0 swap ; Preparing arguments for second substr call
+	substr
+	; ---
+	str-common first ; Get the common character
+	get-priority
+) map
+
+"Part 1: " puts! 
+0 '+ reduce puts!
+
+
+; -- PART 2
+3 chunks ; Split strings into arrays of 3
+
+(
+	dequote
+	str-common "" join
+	str-common first
+	get-priority
+) map
+
+"Part 2: " puts!
+0 '+ reduce puts
