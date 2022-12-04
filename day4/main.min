@@ -1,0 +1,34 @@
+(
+	symbol parse-ids
+	(quot :arr ==> quot :res)
+	(
+		arr "," split
+		(
+			"-" split
+			'integer map range
+		) map @res
+	)
+) ::
+
+(
+	symbol fully-contained
+	(quot :a quot :b ==> bool :res)
+	(
+		a size
+		b size
+		(>) (nip) (pop) if
+		a b intersection size ==
+		@res
+	)
+) ::
+
+"assets/day4" fread
+"\n" split
+dup size 1 - remove ; Remove last element of the array (empty string)
+'parse-ids map
+
+dup (-> fully-contained integer) '+ map-reduce
+"Part 1: " puts! puts!
+
+(-> intersection size 0 > integer) '+ map-reduce
+"Part 2: " puts! puts!

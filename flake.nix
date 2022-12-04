@@ -87,21 +87,15 @@
                 if isx86_64
                 then final
                 else if isDarwin && isAarch64
-                then (import nixpkgs {
-                  system = "x86_64-darwin";
-                  overlays = [ nur.overlay ];
-                })
+                then
+                  (import nixpkgs {
+                    system = "x86_64-darwin";
+                    overlays = [nur.overlay];
+                  })
                 else {};
             })
-            # (final: prev: {
-            #   zig = final.zig_0_10;
-            # })
           ];
         };
-        # roc' = import roc {
-        #   pkgs = pkgs';
-        #   cargoSha256 = "sha256-4RzOUC6qve7C/UhSkKYtMIwIvXlOuIraz689vWNJ+b8=";
-        # };
       in {
         formatter = pkgs.alejandra;
 
@@ -110,7 +104,6 @@
             just
             racket
             x86-64.min-lang
-            # roc'
           ];
 
           nativeBuildInputs = with pkgs; [pkg-config];
