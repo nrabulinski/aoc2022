@@ -4,22 +4,9 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     # Languages for AoC
-    # roc = {
-    #   url = "github:roc-lang/roc";
-    #   flake = false;
-    #   inputs = {
-    #     nixpkgs.follows = "nixpkgs";
-    #     flake-utils.follows = "flake-utils";
-    #     rust-overlay.follows = "rust-overlay";
-    #   };
-    # };
     fenix = {
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    min-src = {
-      url = "github:h3rald/min/v0.37.0";
-      flake = false;
     };
 
     # Build helpers
@@ -57,8 +44,6 @@
     nixpkgs,
     flake-parts,
     nur,
-    min-src,
-    # roc,
     ...
   }:
     flake-parts.lib.mkFlake {inherit self;} {
@@ -76,37 +61,19 @@
         ...
       }: let
         inherit (pkgs) lib;
-        inherit (pkgs.stdenv) isDarwin isAarch64 isx86_64;
-        pkgs' = import nixpkgs {
-          inherit system;
-          config.allowBroken = true;
-          overlays = [
-            nur.overlay
-            (final: prev: {
-              x86-64 =
-                if isx86_64
-                then final
-                else if isDarwin && isAarch64
-                then
-                  (import nixpkgs {
-                    system = "x86_64-darwin";
-                    overlays = [nur.overlay];
-                  })
-                else {};
-            })
-          ];
-        };
+        nur = inputs'.nur.packages;
       in {
         formatter = pkgs.alejandra;
 
         devShells.default = pkgs.mkShell {
-          packages = with pkgs'; [
+          packages = with pkgs; [
             just
-            racket
-            x86-64.min-lang
+            racket # Day 1, 2
+            nur.min-lang # Day 3, 4
+            koka # Day 5?
           ];
 
-          nativeBuildInputs = with pkgs; [pkg-config];
+          nativeBuildInputs = with pkgs; [pkg-config pcre2.dev];
           buildInputs = lib.optional pkgs.stdenv.isDarwin [pkgs.libiconv];
         };
       };

@@ -1,3 +1,5 @@
 assets/
 .direnv/
 .secret
+main
+.koka/
