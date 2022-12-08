@@ -5,12 +5,12 @@ effect computer
     fun cd(where : string) : ()
     fun count-file(size : int) : ()
     
-fun handle-cmd(line : list<string>) : <console,exn,computer> ()
+fun handle-cmd(line : list<string>) : <exn,computer> ()
     match line
         Cons("cd", args) -> cd(args[0].unjust)
         _ -> ()
     
-fun handle-line(line : string) : <console,exn,computer> ()
+fun handle-line(line : string) : <exn,computer> ()
     match line.split(" ")
         Cons("$", rest) -> handle-cmd(rest)
         Cons("dir", _) -> ()
