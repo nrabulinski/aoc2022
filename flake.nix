@@ -70,7 +70,10 @@
             just
             racket # Day 1, 2
             nur.min-lang # Day 3, 4
-            koka # Day 5?
+            # TODO: Rust # Day 5, 6
+            koka # Day 7, 8
+            # pharo # SmallTalk, Day 9, 10
+            openjdk19 # Day 9, 10
           ];
 
           nativeBuildInputs = with pkgs; [pkg-config pcre2.dev];

@@ -3,3 +3,4 @@ assets/
 .secret
 main
 .koka/
+*.class
