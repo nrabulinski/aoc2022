@@ -35,10 +35,27 @@ final class Point {
         return new Point(this.x + other.x, this.y + other.y);
     }
     
-    public double distance(Point other) {
-        var x = (double)(this.x - other.x);
-        var y = (double)(this.y - other.y);
+    public Point sub(Point other) {
+        return new Point(this.x - other.x, this.y - other.y);
+    }
+    
+    public double length() {
         return Math.sqrt(x * x + y * y);
+    }
+    
+    public double distance(Point other) {
+        return this.sub(other).length();
+    }
+    
+    private static int clamp(int val, int min, int max) {
+        return Math.min(Math.max(val, min), max);
+    }
+    
+    public Point clamp(int min, int max) {
+        return new Point(
+            Point.clamp(this.x, min, max),
+            Point.clamp(this.y, min, max)
+        );
     }
     
     public boolean equals(Object other) {
@@ -57,16 +74,23 @@ final class Point {
 }
 
 final class Rope {
-    private Point head = new Point(0, 0);
-    private Point tail = new Point(0, 0);
+    private Point[] knots;
     private HashSet<Point> visited = new HashSet();
     
+    public Rope(int knotCount) {
+        this.knots = new Point[knotCount];
+        for (int i = 0; i < knotCount; i += 1)
+            this.knots[i] = new Point(0, 0);
+    }
+    
     public void tug(Point direction) {
-        var oldHead = head;
-        head = head.add(direction);
-        if (head.distance(tail) >= 2)
-            tail = oldHead;
-        visited.add(tail);
+        knots[0] = knots[0].add(direction);
+        for (int i = 1; i < knots.length; i += 1) {
+            var dist = knots[i - 1].sub(knots[i]);
+            if (dist.length() >= 2)
+                knots[i] = knots[i].add(dist.clamp(-1, 1));
+        }
+        visited.add(knots[knots.length - 1]);
     }
     
     public int visitedPoints() {
@@ -79,17 +103,21 @@ public class Main {
         var f = new File("../assets/day9");
         var s = new Scanner(f);
         
-        var rope = new Rope();
+        var rope1 = new Rope(2);
+        var rope2 = new Rope(10);
         
         String line;
         while (s.hasNextLine() && !(line = s.nextLine().trim()).isEmpty()) {
             var l = line.split(" ");
             var dir = Point.fromChar(l[0].charAt(0));
             var times = Integer.parseInt(l[1]);
-            for (int i = 0; i < times; i += 1)
-                rope.tug(dir);
+            for (int i = 0; i < times; i += 1) {
+                rope1.tug(dir);
+                rope2.tug(dir);
+            }
         }
-        System.out.println("Part 1: " + rope.visitedPoints());
+        System.out.println("Part 1: " + rope1.visitedPoints());
+        System.out.println("Part 2: " + rope2.visitedPoints());
     }
 
     public static void main(String[] args) {
