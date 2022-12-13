@@ -62,6 +62,11 @@
       }: let
         inherit (pkgs) lib;
         nur = inputs'.nur.packages;
+        haskellPackages = pkgs.haskell.packages.ghc94;
+        haskell = haskellPackages.ghcWithPackages (p: with p; [
+          haskell-language-server
+          attoparsec
+        ]);
       in {
         formatter = pkgs.alejandra;
 
@@ -74,7 +79,9 @@
             koka # Day 7, 8
             openjdk19 # Day 9, 10
             scala_3 # Day 11, 12
-            nur.klong # Day 13, 14?
+            haskell # Day 13, 14
+            nur.klong # I'll get to it eventually...
+            
           ];
 
           nativeBuildInputs = with pkgs; [pkg-config pcre2.dev];
