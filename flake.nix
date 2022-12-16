@@ -67,6 +67,9 @@
           haskell-language-server
           attoparsec
         ]);
+        py = pkgs.python3.withPackages (p: with p; [
+          z3
+        ]);
       in {
         formatter = pkgs.alejandra;
 
@@ -79,9 +82,10 @@
             koka # Day 7, 8
             openjdk19 # Day 9, 10
             scala_3 # Day 11, 12
-            haskell # Day 13, 14
-            nur.klong # I'll get to it eventually...
+            haskell # Day 13, 14, 15p1
+            py # Day 15p2
             
+            nur.klong # I'll get to it eventually...
           ];
 
           nativeBuildInputs = with pkgs; [pkg-config pcre2.dev];
